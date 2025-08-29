@@ -1,0 +1,17 @@
+{
+  "id": "workshop_fotopose_basico",
+  "titulo": "Workshop de Fotopose Básico",
+  "tipo": "workshop",
+  "nivel": "inicio",
+  "descripcion": "Taller intensivo de poses para fotografía, expresiones y ángulos.",
+  "modalidad": "fecha_fija",
+  "fechas": { "inicio": "2025-09-15T00:00:00.000Z", "fin": "2025-09-16T00:00:00.000Z" },
+  "duracion_horas": 8,
+  "cupo_maximo": 20,
+  "precio_base": 45000,
+  "moneda": "ARS",
+  "instructores": ["inst_mateo_rios"],
+  "ubicacion": "Estudio Fotográfico B",
+  "activo": true
+}
+

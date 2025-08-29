@@ -1,0 +1,20 @@
+{
+  "id": "curso_pasarela_inicial",
+  "titulo": "Pasarela Inicial",
+  "tipo": "curso",
+  "nivel": "inicio",
+  "descripcion": "Introducción a la pasarela: postura, caminata, ritmo y presencia escénica.",
+  "modalidad": "recurrente",
+  "horarios": [
+    { "dia": "Mar", "inicio": "18:00", "fin": "20:00" },
+    { "dia": "Jue", "inicio": "18:00", "fin": "20:00" }
+  ],
+  "duracion_horas": 16,
+  "cupo_maximo": 15,
+  "precio_base": 60000,
+  "moneda": "ARS",
+  "instructores": ["inst_ana_gomez"],
+  "ubicacion": "Estudio Central",
+  "activo": true
+}
+

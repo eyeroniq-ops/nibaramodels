@@ -1,0 +1,241 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+publish_mode: editorial_workflow
+
+media_folder: static/uploads
+public_folder: /uploads
+
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: cursos
+    label: Cursos y Workshops
+    label_singular: Curso
+    folder: content/cursos
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    summary: "{{titulo}} — {{tipo}} — {{nivel}}"
+    fields:
+      - { label: ID, name: id, widget: string, hint: "Identificador único (autogenerado si lo dejas vacío)", required: false }
+      - { label: Título, name: titulo, widget: string }
+      - { label: Tipo, name: tipo, widget: select, options: [curso, workshop] }
+      - { label: Nivel, name: nivel, widget: select, options: [inicio, intermedio, avanzado], default: inicio }
+      - { label: Descripción, name: descripcion, widget: text }
+      - { label: Modalidad, name: modalidad, widget: select, options: [recurrente, fecha_fija], default: recurrente, hint: "Recurrente usa horarios semanales; Fecha fija usa fechas de inicio/fin" }
+      - label: Horarios (recurrente)
+        name: horarios
+        widget: list
+        required: false
+        fields:
+          - { label: Día, name: dia, widget: select, options: [Lun, Mar, Mié, Jue, Vie, Sáb, Dom] }
+          - label: Inicio
+            name: inicio
+            widget: string
+            hint: "HH:MM (24h)"
+            pattern:
+              - "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+              - "Formato HH:MM 00–23:00–59"
+          - label: Fin
+            name: fin
+            widget: string
+            hint: "HH:MM (24h)"
+            pattern:
+              - "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+              - "Formato HH:MM 00–23:00–59"
+      - label: Fechas (fecha fija)
+        name: fechas
+        widget: object
+        required: false
+        fields:
+          - { label: Inicio, name: inicio, widget: datetime, time_format: false }
+          - { label: Fin, name: fin, widget: datetime, time_format: false }
+      - { label: Duración (horas), name: duracion_horas, widget: number, value_type: int, min: 1 }
+      - { label: Cupo máximo, name: cupo_maximo, widget: number, value_type: int, min: 1 }
+      - { label: Precio base, name: precio_base, widget: number, value_type: float, min: 0 }
+      - { label: Moneda, name: moneda, widget: select, options: [ARS, USD, EUR], default: ARS }
+      - label: Instructor(es)
+        name: instructores
+        widget: relation
+        collection: instructores
+        search_fields: [nombre, email]
+        value_field: id
+        display_fields: [nombre]
+        multiple: true
+        required: false
+      - { label: Ubicación, name: ubicacion, widget: string, required: false }
+      - { label: Activo, name: activo, widget: boolean, default: true }
+
+  - name: instructores
+    label: Instructores
+    label_singular: Instructor
+    folder: content/instructores
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    summary: "{{nombre}} — {{email}}"
+    fields:
+      - { label: ID, name: id, widget: string, required: false }
+      - { label: Nombre, name: nombre, widget: string }
+      - label: Email
+        name: email
+        widget: string
+        required: false
+        pattern:
+          - "^[^\s@]+@[^\s@]+\.[^\s@]+$"
+          - "Correo inválido"
+      - { label: Teléfono, name: telefono, widget: string, required: false }
+      - { label: Instagram, name: instagram, widget: string, required: false }
+      - { label: Bio, name: bio, widget: text, required: false }
+      - { label: Foto, name: foto, widget: image, required: false }
+
+  - name: alumnos
+    label: Alumnos
+    label_singular: Alumno
+    folder: content/alumnos
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    summary: "{{apellido}}, {{nombre}} — {{email}}"
+    fields:
+      - { label: ID, name: id, widget: string, required: false }
+      - { label: Nombre, name: nombre, widget: string }
+      - { label: Apellido, name: apellido, widget: string }
+      - label: Email
+        name: email
+        widget: string
+        pattern:
+          - "^[^\s@]+@[^\s@]+\.[^\s@]+$"
+          - "Correo inválido"
+      - { label: Teléfono, name: telefono, widget: string, required: false }
+      - { label: Fecha de nacimiento, name: fecha_nacimiento, widget: datetime, time_format: false, required: false }
+      - { label: Documento, name: documento, widget: string, required: false }
+      - { label: Dirección, name: direccion, widget: string, required: false }
+      - { label: Ciudad, name: ciudad, widget: string, required: false }
+      - { label: País, name: pais, widget: string, required: false }
+      - { label: Instagram, name: instagram, widget: string, required: false }
+      - { label: Notas, name: notas, widget: text, required: false }
+      - { label: Foto, name: foto, widget: image, required: false }
+
+  - name: inscripciones
+    label: Inscripciones
+    label_singular: Inscripción
+    folder: content/inscripciones
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    summary: "{{alumno}} → {{curso}} — {{estado}}"
+    fields:
+      - { label: ID, name: id, widget: string, required: false }
+      - label: Alumno
+        name: alumno
+        widget: relation
+        collection: alumnos
+        search_fields: [nombre, apellido, email]
+        value_field: id
+        display_fields: [apellido, nombre]
+        multiple: false
+      - label: Curso
+        name: curso
+        widget: relation
+        collection: cursos
+        search_fields: [titulo, nivel, tipo]
+        value_field: id
+        display_fields: [titulo]
+        multiple: false
+      - { label: Horario elegido, name: horario, widget: string, required: false, hint: "Ej: Mar 18:00-20:00 o rango de fechas" }
+      - { label: Fecha de inscripción, name: fecha_inscripcion, widget: datetime, time_format: false }
+      - { label: Estado, name: estado, widget: select, options: [pendiente, confirmada, cancelada], default: pendiente }
+      - { label: Canal, name: canal, widget: select, options: [web, presencial, whatsapp, instagram], default: web }
+      - { label: Notas, name: notas, widget: text, required: false }
+
+  - name: pagos
+    label: Pagos (Ingresos)
+    label_singular: Pago
+    folder: content/pagos
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    summary: "{{monto}} {{moneda}} — {{inscripcion}} — {{estado}}"
+    fields:
+      - { label: ID, name: id, widget: string, required: false }
+      - label: Inscripción
+        name: inscripcion
+        widget: relation
+        collection: inscripciones
+        search_fields: [id, alumno, curso]
+        value_field: id
+        display_fields: [id]
+      - label: Alumno (referencia)
+        name: alumno
+        widget: relation
+        collection: alumnos
+        search_fields: [nombre, apellido, email]
+        value_field: id
+        display_fields: [apellido, nombre]
+        required: false
+      - { label: Monto, name: monto, widget: number, value_type: float, min: 0 }
+      - { label: Moneda, name: moneda, widget: select, options: [ARS, USD, EUR], default: ARS }
+      - { label: Método, name: metodo, widget: select, options: [efectivo, transferencia, tarjeta, mercado_pago, paypal], default: transferencia }
+      - { label: Fecha de pago, name: fecha_pago, widget: datetime, time_format: false }
+      - { label: Comprobante, name: comprobante, widget: file, required: false }
+      - { label: Estado, name: estado, widget: select, options: [recibido, pendiente, rechazado], default: recibido }
+      - { label: Notas, name: notas, widget: text, required: false }
+
+  - name: gastos
+    label: Gastos
+    label_singular: Gasto
+    folder: content/gastos
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    summary: "{{categoria}} — {{monto}} {{moneda}} — {{fecha}}"
+    fields:
+      - { label: ID, name: id, widget: string, required: false }
+      - { label: Categoría, name: categoria, widget: select, options: [alquiler, servicios, publicidad, sueldos, materiales, transporte, impuestos, otros] }
+      - { label: Proveedor, name: proveedor, widget: string, required: false }
+      - { label: Descripción, name: descripcion, widget: text }
+      - { label: Monto, name: monto, widget: number, value_type: float, min: 0 }
+      - { label: Moneda, name: moneda, widget: select, options: [ARS, USD, EUR], default: ARS }
+      - { label: Fecha, name: fecha, widget: datetime, time_format: false }
+      - { label: Comprobante, name: comprobante, widget: file, required: false }
+      - label: Centro de costo (Curso)
+        name: curso
+        widget: relation
+        collection: cursos
+        search_fields: [titulo]
+        value_field: id
+        display_fields: [titulo]
+        required: false
+      - { label: Notas, name: notas, widget: text, required: false }
+
+  - name: ajustes
+    label: Ajustes
+    files:
+      - label: Parámetros
+        name: parametros
+        file: content/ajustes/parametros.json
+        format: json
+        fields:
+          - { label: Moneda predeterminada, name: moneda_default, widget: select, options: [ARS, USD, EUR], default: ARS }
+          - label: Métodos de pago habilitados
+            name: metodos_pago
+            widget: list
+            default: [efectivo, transferencia, tarjeta]
+          - label: Categorías de gasto
+            name: categorias_gasto
+            widget: list
+            default: [alquiler, servicios, publicidad, sueldos, materiales, transporte, impuestos, otros]

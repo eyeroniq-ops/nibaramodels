@@ -1,0 +1,16 @@
+{
+  "id": "alum_juan_perez",
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "email": "juan.perez@example.com",
+  "telefono": "+54 9 11 6000-0000",
+  "fecha_nacimiento": "2000-05-10T00:00:00.000Z",
+  "documento": "DNI 40.000.000",
+  "direccion": "Calle Falsa 123",
+  "ciudad": "CABA",
+  "pais": "Argentina",
+  "instagram": "@juan_modelo",
+  "notas": "Interesado en pasarela.",
+  "foto": ""
+}
+

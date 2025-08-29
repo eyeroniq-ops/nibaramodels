@@ -1,0 +1,12 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/"
+  status = 301
+
+[dev]
+  publish = "."
+
