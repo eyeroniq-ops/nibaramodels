@@ -1,0 +1,15 @@
+{
+  "moneda_default": "ARS",
+  "metodos_pago": ["efectivo", "transferencia", "tarjeta"],
+  "categorias_gasto": [
+    "alquiler",
+    "servicios",
+    "publicidad",
+    "sueldos",
+    "materiales",
+    "transporte",
+    "impuestos",
+    "otros"
+  ]
+}
+

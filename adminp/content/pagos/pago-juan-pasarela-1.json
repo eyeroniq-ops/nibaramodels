@@ -1,0 +1,13 @@
+{
+  "id": "pago_juan_pasarela_1",
+  "inscripcion": "insc_juan_pasarela_2025_08",
+  "alumno": "alum_juan_perez",
+  "monto": 30000,
+  "moneda": "ARS",
+  "metodo": "transferencia",
+  "fecha_pago": "2025-08-21T00:00:00.000Z",
+  "comprobante": "",
+  "estado": "recibido",
+  "notas": "Seña 50%"
+}
+
