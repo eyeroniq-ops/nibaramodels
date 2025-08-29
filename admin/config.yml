@@ -91,7 +91,7 @@ collections:
         widget: string
         required: false
         pattern:
-          - "^[^\s@]+@[^\s@]+\.[^\s@]+$"
+          - "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
           - "Correo inválido"
       - { label: Teléfono, name: telefono, widget: string, required: false }
       - { label: Instagram, name: instagram, widget: string, required: false }
@@ -115,7 +115,7 @@ collections:
         name: email
         widget: string
         pattern:
-          - "^[^\s@]+@[^\s@]+\.[^\s@]+$"
+          - "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
           - "Correo inválido"
       - { label: Teléfono, name: telefono, widget: string, required: false }
       - { label: Fecha de nacimiento, name: fecha_nacimiento, widget: datetime, time_format: false, required: false }
